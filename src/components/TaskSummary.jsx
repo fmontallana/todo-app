@@ -9,7 +9,7 @@ function TaskSummary({ todos }) {
   const filteredClients = [...new Set(clientList)];
 
   return (
-    <div className="flex-1 h-full w-full p-10 bg-base-200 rounded-lg overflow-y-auto">
+    <div className="flex-1 h-full w-full p-4 lg:p-10 bg-base-200 rounded-lg overflow-y-auto">
       <p>Good {getDayTime()} po!</p>
       <p>{new Date().toLocaleString().split(",")[0]}</p>
       <br />

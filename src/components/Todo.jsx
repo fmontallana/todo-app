@@ -80,7 +80,7 @@ function Todo() {
 
   return (
     <div className=" h-full">
-      <div className=" w-10/12 mx-auto py-10 flex flex-col lg:flex-row gap-10">
+      <div className="w-11/12 lg:w-10/12 mx-auto py-6 flex flex-col lg:flex-row gap-10">
         <div className="flex-1 rounded-box ">
           <h1 className="text-lg font-bold">Task Manager</h1>
           <br />
@@ -94,9 +94,9 @@ function Todo() {
                 onChange={(e) => setTodoInput(e.target.value)}
               />
             </div>
-            <div className="form-control mb-2 flex-row justify-between w-full">
+            <div className=" mb-2 flex lg:justify-evenly w-full">
               <select
-                className="select select-sm select-bordered w-full max-w-xs rounded-r-none"
+                className="w-5/12 lg:flex-1 select select-sm select-bordered rounded-r-none"
                 onChange={(e) => {
                   setSelectedClient(e.target.value);
                   setClientInput(e.target.value);
@@ -114,40 +114,45 @@ function Todo() {
                 })}
               </select>
               <input
-                className="input input-sm input-bordered flex-1 rounded-none"
+                className="w-5/12 lg:flex-1 input input-sm input-bordered rounded-none"
                 type="text"
                 placeholder="or add new"
                 value={clientInput}
                 onChange={(e) => setClientInput(e.target.value)}
               />
               <button
-                className="btn btn-sm btn-success rounded-l-none text-lg rounded-none "
+                className="lg:w-1/12 btn btn-sm btn-info rounded-l-none rounded-none "
                 type="button"
                 onClick={addClient}
               >
                 <GrFormAdd />
               </button>
               <button
-                className="btn btn-sm btn-error text-lg rounded-l-none "
+                className="lg:w-1/12 btn btn-sm btn-error rounded-l-none "
                 type="button"
                 onClick={removeClient}
               >
                 <GrFormClose />
               </button>
             </div>
-            <div className="form-control mb-2 flex justify-between w-full">
+            <div className="form-control mb-2 flex justify-between w-full gap-2">
               <button className="btn btn-sm btn-primary ">create task</button>
+              <button type="button" className="btn btn-sm btn-neutral">
+                Clear Task
+              </button>
             </div>
           </form>
           <br />
           <Table todos={todos} doneTodo={doneTodo} removeTodo={removeTodo} />
         </div>
+
         <div className="divider divider-horizontal"></div>
-        <div className="w-5/12 h-[80vh] max-h-[80vh] ">
+
+        <div className="lg:w-5/12 h-[80vh] max-h-[80vh] ">
           <TaskSummary todos={todos} />
         </div>
       </div>
-      <div className=" w-full bottom-0 grid place-items-center">
+      <div className=" w-full pb-2 bottom-0 grid place-items-center">
         <p className="text-xs">© 2023 • Made with ❤️ by Fernando Montallana</p>
       </div>
     </div>

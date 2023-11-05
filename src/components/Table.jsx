@@ -5,7 +5,7 @@ function Table({ todos, removeTodo, doneTodo }) {
   if (todos.length <= 0) return;
 
   return (
-    <div className="max-h-80 overflow-x-auto">
+    <div className="max-h-96 overflow-x-auto">
       <table className="table">
         {/* head */}
         <thead>
@@ -33,15 +33,15 @@ function Table({ todos, removeTodo, doneTodo }) {
                 </td>
                 <td>{todo.todo}</td>
                 <td>{todo.client}</td>
-                <td className="flex ">
+                <td className="lg:w-3/12">
                   <button
-                    className="btn btn-xs btn-info text-xs rounded-r-none"
+                    className="btn btn-xs btn-info text-xs lg:rounded-r-none"
                     onClick={() => {}}
                   >
                     <AiFillEdit />
                   </button>
                   <button
-                    className="btn btn-xs btn-error text-xs rounded-l-none"
+                    className="btn btn-xs btn-error text-xs lg:rounded-l-none"
                     onClick={() => removeTodo(todo.id)}
                   >
                     <AiFillDelete />
