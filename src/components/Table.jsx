@@ -5,7 +5,7 @@ function Table({ todos, removeTodo, doneTodo }) {
   if (todos.length <= 0) return;
 
   return (
-    <div className="overflow-x-auto">
+    <div className="max-h-80 overflow-x-auto">
       <table className="table">
         {/* head */}
         <thead>

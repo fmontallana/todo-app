@@ -79,70 +79,77 @@ function Todo() {
   };
 
   return (
-    <div className="container w-10/12 mx-auto mt-10 flex flex-col sm:flex-row gap-10">
-      <div className="flex-1">
-        <h1 className="text-lg font-bold">Task Manager</h1>
-        <br />
-        <form className="flex flex-col w-full" onSubmit={(e) => addTodo(e)}>
-          <div className="form-control mb-2 flex justify-between w-full">
-            <input
-              className="input input-sm input-bordered flex-1"
-              type="text"
-              placeholder="Enter your task"
-              value={todoInput}
-              onChange={(e) => setTodoInput(e.target.value)}
-            />
-          </div>
-          <div className="form-control mb-2 flex-row justify-between w-full">
-            <select
-              className="select select-sm select-bordered w-full max-w-xs rounded-r-none"
-              onChange={(e) => {
-                setSelectedClient(e.target.value);
-                setClientInput(e.target.value);
-              }}
-            >
-              <option value={""} defaultValue={""}>
-                Select Client
-              </option>
-              {client.map((client, index) => {
-                return (
-                  <option key={index} value={client}>
-                    {client}
-                  </option>
-                );
-              })}
-            </select>
-            <input
-              className="input input-sm input-bordered flex-1 rounded-none"
-              type="text"
-              placeholder="or add new"
-              value={clientInput}
-              onChange={(e) => setClientInput(e.target.value)}
-            />
-            <button
-              className="btn btn-sm btn-success rounded-l-none text-lg rounded-none "
-              type="button"
-              onClick={addClient}
-            >
-              <GrFormAdd />
-            </button>
-            <button
-              className="btn btn-sm btn-error text-lg rounded-l-none "
-              type="button"
-              onClick={removeClient}
-            >
-              <GrFormClose />
-            </button>
-          </div>
-          <div className="form-control mb-2 flex justify-between w-full">
-            <button className="btn btn-sm btn-primary ">create task</button>
-          </div>
-        </form>
-        <br />
-        <Table todos={todos} doneTodo={doneTodo} removeTodo={removeTodo} />
+    <div className=" h-full">
+      <div className=" w-10/12 mx-auto py-10 flex flex-col lg:flex-row gap-10">
+        <div className="flex-1 rounded-box ">
+          <h1 className="text-lg font-bold">Task Manager</h1>
+          <br />
+          <form className="flex flex-col w-full" onSubmit={(e) => addTodo(e)}>
+            <div className="form-control mb-2 flex justify-between w-full">
+              <input
+                className="input input-sm input-bordered flex-1"
+                type="text"
+                placeholder="Enter your task"
+                value={todoInput}
+                onChange={(e) => setTodoInput(e.target.value)}
+              />
+            </div>
+            <div className="form-control mb-2 flex-row justify-between w-full">
+              <select
+                className="select select-sm select-bordered w-full max-w-xs rounded-r-none"
+                onChange={(e) => {
+                  setSelectedClient(e.target.value);
+                  setClientInput(e.target.value);
+                }}
+              >
+                <option value={""} defaultValue={""}>
+                  Select Client
+                </option>
+                {client.map((client, index) => {
+                  return (
+                    <option key={index} value={client}>
+                      {client}
+                    </option>
+                  );
+                })}
+              </select>
+              <input
+                className="input input-sm input-bordered flex-1 rounded-none"
+                type="text"
+                placeholder="or add new"
+                value={clientInput}
+                onChange={(e) => setClientInput(e.target.value)}
+              />
+              <button
+                className="btn btn-sm btn-success rounded-l-none text-lg rounded-none "
+                type="button"
+                onClick={addClient}
+              >
+                <GrFormAdd />
+              </button>
+              <button
+                className="btn btn-sm btn-error text-lg rounded-l-none "
+                type="button"
+                onClick={removeClient}
+              >
+                <GrFormClose />
+              </button>
+            </div>
+            <div className="form-control mb-2 flex justify-between w-full">
+              <button className="btn btn-sm btn-primary ">create task</button>
+            </div>
+          </form>
+          <br />
+          <Table todos={todos} doneTodo={doneTodo} removeTodo={removeTodo} />
+        </div>
+        <div className="divider divider-horizontal"></div>
+        <div className="w-5/12 h-[80vh] max-h-[80vh] ">
+          <TaskSummary todos={todos} />
+        </div>
       </div>
-      <div className="divider divider-horizontal"></div>
-      <TaskSummary todos={todos} />
+      <div className=" w-full bottom-0 grid place-items-center">
+        <p className="text-xs">© 2023 • Made with ❤️ by Fernando Montallana</p>
+      </div>
     </div>
   );
 }
