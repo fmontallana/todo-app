@@ -137,8 +137,15 @@ function Todo() {
             </div>
             <div className="form-control mb-2 flex justify-between w-full gap-2">
               <button className="btn btn-sm btn-primary ">create task</button>
-              <button type="button" className="btn btn-sm btn-neutral">
-                Clear Task
+              <button
+                type="button"
+                className="btn btn-sm btn-neutral"
+                onClick={() => {
+                  if (!confirm("Are you sure to clear all tasks?")) return;
+                  setTodos([]);
+                }}
+              >
+                Clear All Tasks
               </button>
             </div>
           </form>
