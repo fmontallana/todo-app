@@ -14,7 +14,7 @@ function TaskSummary({ todos }) {
       {new Date().toLocaleString().split(",")[0]} <br />
       <p className="font-bold">TASKS</p>
       {todos.length <= 0 && <p>--- No available task ---</p>}
-      {filteredClients.map((client) => {
+      {filteredClients.sort().map((client) => {
         return (
           <div key={client} className="mb-2">
             <h1 className="font-bold">{client}</h1>
