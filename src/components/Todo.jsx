@@ -44,6 +44,13 @@ function Todo() {
     setTodos(newTodos);
   };
 
+  const removeDoneTodos = () => {
+    if (todos.length <= 0) return
+    if (!confirm("Are you sure?")) return;
+    const newTodos = todos.filter((todos) => todos.status != 1);
+    setTodos(newTodos);
+  }
+
   const doneTodo = (id) => {
     const newTodos = todos.map((todo) =>
       todo.id === id
@@ -140,16 +147,25 @@ function Todo() {
             </div>
             <div className="form-control mb-2 flex justify-between w-full gap-2">
               <button className="btn btn-sm btn-primary ">create task</button>
+              <div className="flex justify-evenly">
               <button
                 type="button"
-                className="btn btn-sm btn-neutral"
+                className="flex-1 btn btn-sm btn-neutral rounded-r-none border border-r-base-200"
+                onClick={removeDoneTodos}
+                >
+                Delete Done Tasks
+              </button>
+              <button
+                type="button"
+                className="flex-1 btn btn-sm btn-neutral rounded-l-none"
                 onClick={() => {
                   if (!confirm("Are you sure to clear all tasks?")) return;
                   setTodos([]);
                 }}
-              >
-                Clear All Tasks
+                >
+                Delete All Tasks
               </button>
+                </div>
             </div>
           </form>
           <br />
