@@ -114,7 +114,7 @@ function Todo() {
                 <option value={""} defaultValue={""}>
                   Select Client
                 </option>
-                {client.map((client, index) => {
+                {client.sort().map((client, index) => {
                   if(client === "") return
                   return (
                     <option key={index} value={client}>
