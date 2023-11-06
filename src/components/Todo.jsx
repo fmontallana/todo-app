@@ -4,6 +4,8 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import { getDayTime } from "../helpers/useGetDayTime";
 import Table from "./Table";
 import TaskSummary from "./TaskSummary";
+import { toast } from "react-toastify";
+import { AiFillDelete, AiFillFileAdd } from "react-icons/ai";
 
 function Todo() {
   const [todos, setTodos] = useLocalStorage("todos", []);
@@ -35,6 +37,9 @@ function Todo() {
 
     setTodos([...todos, newTodo]);
     setCounter((prev) => prev + 1);
+    toast.success("Task added!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   const removeTodo = (id) => {
@@ -45,11 +50,21 @@ function Todo() {
   };
 
   const removeDoneTodos = () => {
-    if (todos.length <= 0) return
+    const isCompleted = todos.filter((item) => item.status === 1);
+    if (isCompleted.length == 0) {
+      toast.warn("No task done!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
+
     if (!confirm("Are you sure?")) return;
     const newTodos = todos.filter((todos) => todos.status != 1);
     setTodos(newTodos);
-  }
+    toast.success("Tasks done removed!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  };
 
   const doneTodo = (id) => {
     const newTodos = todos.map((todo) =>
@@ -58,38 +73,48 @@ function Todo() {
         : todo
     );
 
-    console.log(newTodos);
     setTodos(newTodos);
   };
 
   const addClient = () => {
-    if(clientInput === "") return
+    if (clientInput === "") {
+      toast.warn("Please enter client name.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      return;
+    }
 
     const isAdded = client.find(
       (value) => value.toLowerCase() == clientInput.toLowerCase()
     );
 
     if (isAdded) {
-      alert("Client name already in the list.");
+      toast.warn("Client name already in the list.", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       return;
     }
 
     setClientInput("");
     setClient((prev) => [...prev, clientInput]);
-    alert("Client added!");
+    toast.success("Client added!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   const removeClient = () => {
     if (selectedClient === "") return;
     const newClient = client.filter((item, index) => item !== clientInput);
     setClient(newClient);
-    alert("Client remove!");
     setClientInput("");
+    toast.success("Client remove!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   return (
     <div className=" h-full">
-      <div className="w-11/12 lg:w-10/12 mx-auto py-6 flex flex-col lg:flex-row gap-10">
+      <div className="w-11/12  lg:w-10/12 mx-auto py-6 flex flex-col lg:flex-row gap-10">
         <div className="flex-1 rounded-box ">
           <h1 className="text-lg font-bold">Task Manager</h1>
           <br />
@@ -115,7 +140,7 @@ function Todo() {
                   Select Client
                 </option>
                 {client.sort().map((client, index) => {
-                  if(client === "") return
+                  if (client === "") return;
                   return (
                     <option key={index} value={client}>
                       {client}
@@ -135,37 +160,41 @@ function Todo() {
                 type="button"
                 onClick={addClient}
               >
-                <GrFormAdd />
+                <AiFillFileAdd />
               </button>
               <button
                 className="lg:w-1/12 btn btn-sm btn-error rounded-l-none "
                 type="button"
                 onClick={removeClient}
               >
-                <GrFormClose />
+                {/* <GrFormClose /> */}
+                <AiFillDelete />
               </button>
             </div>
             <div className="form-control mb-2 flex justify-between w-full gap-2">
-              <button className="btn btn-sm btn-primary ">create task</button>
+              <button className="btn btn-sm btn-primary ">add task</button>
               <div className="flex justify-evenly">
-              <button
-                type="button"
-                className="flex-1 btn btn-sm btn-neutral rounded-r-none border border-r-base-200"
-                onClick={removeDoneTodos}
+                <button
+                  type="button"
+                  className="flex-1 btn btn-sm btn-neutral rounded-r-none border border-r-base-200"
+                  onClick={removeDoneTodos}
                 >
-                Delete Done Tasks
-              </button>
-              <button
-                type="button"
-                className="flex-1 btn btn-sm btn-neutral rounded-l-none"
-                onClick={() => {
-                  if (!confirm("Are you sure to clear all tasks?")) return;
-                  setTodos([]);
-                }}
+                  <AiFillDelete /> Tasks done
+                </button>
+                <button
+                  type="button"
+                  className="flex-1 btn btn-sm btn-neutral rounded-l-none"
+                  onClick={() => {
+                    if (!confirm("Are you sure to clear all tasks?")) return;
+                    setTodos([]);
+                    toast.success("All task removed!", {
+                      position: toast.POSITION.TOP_CENTER,
+                    });
+                  }}
                 >
-                Delete All Tasks
-              </button>
-                </div>
+                  <AiFillDelete /> All
+                </button>
+              </div>
             </div>
           </form>
           <br />
