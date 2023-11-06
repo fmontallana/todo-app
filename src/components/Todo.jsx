@@ -56,7 +56,7 @@ function Todo() {
   };
 
   const addClient = () => {
-    if(clientInput === "" || selectedClient === "") return
+    if(clientInput === "") return
 
     const isAdded = client.find(
       (value) => value.toLowerCase() == clientInput.toLowerCase()
