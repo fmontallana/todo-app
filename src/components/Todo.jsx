@@ -108,6 +108,7 @@ function Todo() {
                   Select Client
                 </option>
                 {client.map((client, index) => {
+                  if(client === "") return
                   return (
                     <option key={index} value={client}>
                       {client}
