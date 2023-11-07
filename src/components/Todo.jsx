@@ -47,6 +47,9 @@ function Todo() {
 
     const newTodos = todos.filter((todos) => todos.id != id);
     setTodos(newTodos);
+    toast.success("Task removed!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   const removeDoneTodos = () => {
