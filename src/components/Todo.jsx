@@ -14,11 +14,11 @@ function Todo() {
   const [todoInput, setTodoInput] = useState("");
   const [clientInput, setClientInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
-  const [selectedTodo, setSelectedTodo] = useState("")
-  const [isEdit, setIsEdit] = useState(false)
+  const [selectedTodo, setSelectedTodo] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
 
-  const taskInputRef = useRef(null)
-  const clientSelectRef = useRef(null)
+  const taskInputRef = useRef(null);
+  const clientSelectRef = useRef(null);
 
   const addTodo = (e) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ function Todo() {
       id: counter,
       todo: todoInput,
       client: selectedClient,
-      status: 0,
+      status: "",
       dateAdded: new Date(),
       dateModified: null,
     };
@@ -84,6 +84,18 @@ function Todo() {
     setTodos(newTodos);
   };
 
+  const setToOngoing = (id) => {
+    const newTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, status: 0, dateModified: new Date() } : todo
+    );
+
+    setTodos(newTodos);
+
+    toast.success("Task is now on-ongoing!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  };
+
   const addClient = () => {
     if (clientInput === "") {
       toast.warn("Please enter client name.", {
@@ -121,54 +133,60 @@ function Todo() {
   };
 
   const editTodo = (todo) => {
-    setIsEdit(true)
-    setSelectedTodo(todo.id)
-    setTodoInput(todo.todo)
-    console.log(todo)
-  }
+    setIsEdit(true);
+    setSelectedTodo(todo.id);
+    setTodoInput(todo.todo);
+    clientSelectRef.current.selectedIndex = client.indexOf(todo.client) + 1;
+    setSelectedClient(todo.client);
+    setClientInput(todo.client);
+    console.log(client.indexOf(todo.client));
+    console.log(clientSelectRef);
+  };
 
   const saveTodo = () => {
     const editedTodo = {
       id: selectedTodo,
       todo: todoInput,
-      client: selectedClient
-    }
+      client: selectedClient,
+      status: "",
+      dateModified: new Date(),
+    };
 
     const newTodos = todos.map((todo) =>
-      todo.id === selectedTodo
-        ? { ...todo, ...editedTodo }
-        : todo
+      todo.id === selectedTodo ? { ...todo, ...editedTodo } : todo
     );
 
-    setTodos(newTodos)
-    setIsEdit(false)
-    setTodoInput("")
-    setClientInput("")
-    clientSelectRef.current.selectedIndex = 0
+    setTodos(newTodos);
+    setIsEdit(false);
+    setTodoInput("");
+    setClientInput("");
+    clientSelectRef.current.selectedIndex = 0;
 
     toast.success("Edited task saved!", {
       position: toast.POSITION.TOP_CENTER,
     });
-  }
+  };
 
   const handleCancelBtn = () => {
-    setIsEdit(false)
-    setTodoInput("")
-    setTodoInput("")
-    setClientInput("")
-    clientSelectRef.current.selectedIndex = 0
-  }
+    setIsEdit(false);
+    setTodoInput("");
+    setTodoInput("");
+    setClientInput("");
+    clientSelectRef.current.selectedIndex = 0;
+  };
 
   return (
     <div className=" h-full">
-      <div className="w-11/12  lg:w-10/12 mx-auto py-6 flex flex-col lg:flex-row gap-10">
+      <div className="w-11/12  lg:w-10/12 mx-auto py-6 flex flex-col lg:flex-row ">
         <div className="flex-1 rounded-box ">
           <h1 className="text-lg font-bold">Task Manager</h1>
           <br />
           <form className="flex flex-col w-full" onSubmit={(e) => addTodo(e)}>
             <div className="form-control mb-2 flex justify-between w-full">
               <input
-                className="input input-sm input-bordered flex-1"
+                className={`input input-sm input-bordered flex-1 ${
+                  isEdit && "border-slate-400"
+                }`}
                 type="text"
                 placeholder="Enter your task"
                 value={todoInput}
@@ -178,7 +196,9 @@ function Todo() {
             </div>
             <div className=" mb-2 flex lg:justify-evenly w-full">
               <select
-                className="w-5/12 lg:flex-1 select select-sm select-bordered rounded-r-none"
+                className={`w-5/12 lg:flex-1 select select-sm select-bordered rounded-r-none ${
+                  isEdit && "border-slate-400"
+                }`}
                 onChange={(e) => {
                   setSelectedClient(e.target.value);
                   setClientInput(e.target.value);
@@ -198,13 +218,16 @@ function Todo() {
                 })}
               </select>
               <input
-                className="w-5/12 lg:flex-1 input input-sm input-bordered rounded-none"
+                className={`w-5/12 lg:flex-1 input input-sm input-bordered rounded-none ${
+                  isEdit && "border-slate-400"
+                }`}
                 type="text"
                 placeholder="or add new"
                 value={clientInput}
                 onChange={(e) => setClientInput(e.target.value)}
               />
               <button
+                title="Add client"
                 className="lg:w-1/12 btn btn-sm btn-info rounded-l-none rounded-none "
                 type="button"
                 onClick={addClient}
@@ -212,6 +235,7 @@ function Todo() {
                 <AiFillFileAdd />
               </button>
               <button
+                title="Remove client"
                 className="lg:w-1/12 btn btn-sm btn-error rounded-l-none "
                 type="button"
                 onClick={removeClient}
@@ -221,13 +245,30 @@ function Todo() {
               </button>
             </div>
             <div className="form-control mb-2 flex justify-between w-full gap-2">
-              {!isEdit && <button className="btn btn-sm btn-primary ">add task</button>}
-              {isEdit && <div className="flex w-full">
-                <button type="button" className="flex-1 btn btn-sm btn-info rounded-r-none" onClick={saveTodo}>save</button>
-                <button type="button" className="flex-1 btn btn-sm btn-warning rounded-l-none" onClick={handleCancelBtn}>cancel</button>
-                </div>}
+              {!isEdit && (
+                <button className="btn btn-sm btn-primary ">add task</button>
+              )}
+              {isEdit && (
+                <div className="flex w-full">
+                  <button
+                    type="button"
+                    className="flex-1 btn btn-sm btn-info rounded-r-none"
+                    onClick={saveTodo}
+                  >
+                    save
+                  </button>
+                  <button
+                    type="button"
+                    className="flex-1 btn btn-sm btn-warning rounded-l-none"
+                    onClick={handleCancelBtn}
+                  >
+                    cancel
+                  </button>
+                </div>
+              )}
               <div className="flex justify-evenly">
                 <button
+                  title="Delete task/s done"
                   type="button"
                   className="flex-1 btn btn-sm btn-neutral rounded-r-none border border-r-base-200"
                   onClick={removeDoneTodos}
@@ -235,6 +276,7 @@ function Todo() {
                   <AiFillDelete /> Tasks done
                 </button>
                 <button
+                  title="Delete all task"
                   type="button"
                   className="flex-1 btn btn-sm btn-neutral rounded-l-none"
                   onClick={() => {
@@ -251,12 +293,18 @@ function Todo() {
             </div>
           </form>
           <br />
-          <Table todos={todos} doneTodo={doneTodo} removeTodo={removeTodo} editTodo={editTodo} />
+          <Table
+            todos={todos}
+            doneTodo={doneTodo}
+            removeTodo={removeTodo}
+            editTodo={editTodo}
+            setToOngoing={setToOngoing}
+          />
         </div>
 
         <div className="divider divider-horizontal"></div>
 
-        <div className="lg:w-5/12 h-[80vh] max-h-[80vh] ">
+        <div className="flex-1 lg:w-5/12 h-[80vh] min-h-[80vh] max-h-[80vh] ">
           <TaskSummary todos={todos} />
         </div>
       </div>

@@ -34,8 +34,11 @@ function TaskSummary({ todos }) {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex flex-col lg:flex-row justify-end gap-2">
+    <div className="h-full flex flex-col gap-2">
+      <div className="flex flex-col lg:flex-row justify-end gap-2 mb-4">
+        <h1 className="flex-1 text-lg font-bold float-left">
+          Generated Task Format
+        </h1>
         <button className="btn btn-sm btn-info" onClick={copyText}>
           <AiFillCopy />
           Copy
@@ -68,7 +71,12 @@ function TaskSummary({ todos }) {
                   if (todo.client !== client) return;
                   return (
                     <>
-                      • {todo.todo} ({todo.status == 0 ? "ongoing" : "done"}){" "}
+                      • {todo.todo}{" "}
+                      {todo.status === 0
+                        ? "(on-going)"
+                        : todo.status === 1
+                        ? "(done)"
+                        : ""}
                       <br />
                     </>
                   );
