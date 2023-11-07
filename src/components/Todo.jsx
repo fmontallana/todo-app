@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { GrFormAdd, GrFormClose } from "react-icons/gr";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { getDayTime } from "../helpers/useGetDayTime";
@@ -14,6 +14,11 @@ function Todo() {
   const [todoInput, setTodoInput] = useState("");
   const [clientInput, setClientInput] = useState("");
   const [selectedClient, setSelectedClient] = useState("");
+  const [selectedTodo, setSelectedTodo] = useState("")
+  const [isEdit, setIsEdit] = useState(false)
+
+  const taskInputRef = useRef(null)
+  const clientSelectRef = useRef(null)
 
   const addTodo = (e) => {
     e.preventDefault();
@@ -115,6 +120,45 @@ function Todo() {
     });
   };
 
+  const editTodo = (todo) => {
+    setIsEdit(true)
+    setSelectedTodo(todo.id)
+    setTodoInput(todo.todo)
+    console.log(todo)
+  }
+
+  const saveTodo = () => {
+    const editedTodo = {
+      id: selectedTodo,
+      todo: todoInput,
+      client: selectedClient
+    }
+
+    const newTodos = todos.map((todo) =>
+      todo.id === selectedTodo
+        ? { ...todo, ...editedTodo }
+        : todo
+    );
+
+    setTodos(newTodos)
+    setIsEdit(false)
+    setTodoInput("")
+    setClientInput("")
+    clientSelectRef.current.selectedIndex = 0
+
+    toast.success("Edited task saved!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+
+  const handleCancelBtn = () => {
+    setIsEdit(false)
+    setTodoInput("")
+    setTodoInput("")
+    setClientInput("")
+    clientSelectRef.current.selectedIndex = 0
+  }
+
   return (
     <div className=" h-full">
       <div className="w-11/12  lg:w-10/12 mx-auto py-6 flex flex-col lg:flex-row gap-10">
@@ -128,6 +172,7 @@ function Todo() {
                 type="text"
                 placeholder="Enter your task"
                 value={todoInput}
+                ref={taskInputRef}
                 onChange={(e) => setTodoInput(e.target.value)}
               />
             </div>
@@ -138,6 +183,7 @@ function Todo() {
                   setSelectedClient(e.target.value);
                   setClientInput(e.target.value);
                 }}
+                ref={clientSelectRef}
               >
                 <option value={""} defaultValue={""}>
                   Select Client
@@ -175,7 +221,11 @@ function Todo() {
               </button>
             </div>
             <div className="form-control mb-2 flex justify-between w-full gap-2">
-              <button className="btn btn-sm btn-primary ">add task</button>
+              {!isEdit && <button className="btn btn-sm btn-primary ">add task</button>}
+              {isEdit && <div className="flex w-full">
+                <button type="button" className="flex-1 btn btn-sm btn-info rounded-r-none" onClick={saveTodo}>save</button>
+                <button type="button" className="flex-1 btn btn-sm btn-warning rounded-l-none" onClick={handleCancelBtn}>cancel</button>
+                </div>}
               <div className="flex justify-evenly">
                 <button
                   type="button"
@@ -201,7 +251,7 @@ function Todo() {
             </div>
           </form>
           <br />
-          <Table todos={todos} doneTodo={doneTodo} removeTodo={removeTodo} />
+          <Table todos={todos} doneTodo={doneTodo} removeTodo={removeTodo} editTodo={editTodo} />
         </div>
 
         <div className="divider divider-horizontal"></div>

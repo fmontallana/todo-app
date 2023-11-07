@@ -1,7 +1,7 @@
 import React from "react";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 
-function Table({ todos, removeTodo, doneTodo }) {
+function Table({ todos, removeTodo, doneTodo, editTodo }) {
   if (todos.length <= 0) return;
 
   return (
@@ -36,7 +36,7 @@ function Table({ todos, removeTodo, doneTodo }) {
                 <td className="lg:w-3/12">
                   <button
                     className="btn btn-xs btn-info text-xs lg:rounded-r-none"
-                    onClick={() => {}}
+                    onClick={() => editTodo(todo)}
                   >
                     <AiFillEdit />
                   </button>
