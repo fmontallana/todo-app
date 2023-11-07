@@ -35,7 +35,7 @@ function Todo() {
       dateModified: null,
     };
 
-    setTodos([...todos, newTodo]);
+    setTodos([newTodo, ...todos]);
     setCounter((prev) => prev + 1);
     toast.success("Task added!", {
       position: toast.POSITION.TOP_CENTER,
