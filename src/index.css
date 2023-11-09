@@ -1,3 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito&family=Nunito+Sans:opsz@6..12&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        font-family: "Nunito", sans-serif;
+    }
+
+    h1 {
+        font-family: "Nunito Sans", sans-serif;
+    }
+}
