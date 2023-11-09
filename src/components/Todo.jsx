@@ -5,7 +5,7 @@ import { getDayTime } from "../helpers/useGetDayTime";
 import Table from "./Table";
 import TaskSummary from "./TaskSummary";
 import { toast } from "react-toastify";
-import { AiFillDelete, AiFillFileAdd } from "react-icons/ai";
+import { AiFillCopyrightCircle, AiFillDelete, AiFillFileAdd, AiFillGithub } from "react-icons/ai";
 
 function Todo() {
   const [todos, setTodos] = useLocalStorage("todos", []);
@@ -308,8 +308,8 @@ function Todo() {
           <TaskSummary todos={todos} />
         </div>
       </div>
-      <div className=" w-full pb-2 bottom-0 grid place-items-center">
-        <p className="text-xs">© 2023 • Made with ❤️ by Fernando Montallana</p>
+      <div className="flex gap-2 w-full pb-2 bottom-0 justify-center place-items-center text-xs">
+        <p className="flex place-items-center gap-1"><AiFillCopyrightCircle /> 2023 • Made with ❤️ by Fernando Montallana • <AiFillGithub /> <a href="https://github.com/fmontallana/todo-app" target="_blank"> Source</a></p>
       </div>
     </div>
   );
