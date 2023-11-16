@@ -67,20 +67,22 @@ function TaskSummary({ todos }) {
             return (
               <div key={client} className="mb-2">
                 <h1 className="font-bold">{client}</h1>
-                {todos.map((todo) => {
-                  if (todo.client !== client) return;
-                  return (
-                    <>
-                      • {todo.todo}{" "}
-                      {todo.status === 0
-                        ? "(on-going)"
-                        : todo.status === 1
-                        ? "(done)"
-                        : ""}
-                      <br />
-                    </>
-                  );
-                })}
+                {todos
+                  .sort((a, b) => a.id - b.id)
+                  .map((todo) => {
+                    if (todo.client !== client) return;
+                    return (
+                      <>
+                        • {todo.todo}{" "}
+                        {todo.status === 0
+                          ? "(on-going)"
+                          : todo.status === 1
+                          ? "(done)"
+                          : ""}
+                        <br />
+                      </>
+                    );
+                  })}
               </div>
             );
           })}
